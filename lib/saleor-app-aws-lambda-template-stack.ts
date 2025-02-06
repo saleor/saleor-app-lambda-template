@@ -1,16 +1,34 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as apigw from "aws-cdk-lib/aws-apigateway";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 
-export class SaleorAppAwsLambdaTemplateStack extends cdk.Stack {
+export class SaleorAppApiGatewayStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+    super(scope, id, props)
 
-    // The code that defines your stack goes here
+    const routerHandler = new lambda.Function(this, 'ApiRouterHandler', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      code: lambda.Code.fromAsset('lambda'),
+      handler: 'index.handler'
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'SaleorAppAwsLambdaTemplateQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const endpoint = new apigw.LambdaRestApi(this, `ApiGwEndpoint`, {
+      handler: routerHandler,
+    });
+
+    // Add /api route
+    const apiResource = endpoint.root.addResource('api');
+
+    apiResource.addResource('manifest').addMethod('GET', new apigw.LambdaIntegration(routerHandler));
+
+    // Register endpoint
+    apiResource.addResource('register')
+      .addMethod('POST', new apigw.LambdaIntegration(routerHandler));
+
+    // Webhook endpoint
+    apiResource.addResource('webhook')
+      .addResource('order-created')
+      .addMethod('POST', new apigw.LambdaIntegration(routerHandler));
   }
 }
