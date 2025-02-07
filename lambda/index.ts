@@ -9,13 +9,14 @@ export async function handler(
   context: Context,
 ): Promise<APIGatewayProxyResultV2> {
   try {
+    console.log(event);
     switch (event.routeKey) {
       case 'GET /api/manifest':
-        manifestHandler(event, context);
+        return manifestHandler(event, context);
       case 'POST /api/register':
-        registerHandler(event, context);
+        return registerHandler(event, context);
       case 'POST /api/webhook/order-created':
-        orderCreatedHandler(event, context);
+        return orderCreatedHandler(event, context);
       default:
         return {
           statusCode: 404,

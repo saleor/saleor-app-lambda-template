@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@saleor/app-sdk':
-    specifier: 0.0.0-pr-20250206135700
-    version: 0.0.0-pr-20250206135700(graphql@16.8.0)(next@15.1.6)(react-dom@19.0.0)(react@19.0.0)
+    specifier: 0.0.0-pr-20250207113756
+    version: 0.0.0-pr-20250207113756(graphql@16.8.0)(next@15.1.6)(react-dom@19.0.0)(react@19.0.0)
   aws-cdk-lib:
     specifier: 2.174.1
     version: 2.174.1(constructs@10.4.2)
@@ -58,6 +58,9 @@ devDependencies:
   aws-cdk:
     specifier: 2.174.1
     version: 2.174.1
+  dotenv:
+    specifier: ^16.4.7
+    version: 16.4.7
   jest:
     specifier: ^29.7.0
     version: 29.7.0(@types/node@22.7.9)(ts-node@10.9.2)
@@ -98,7 +101,7 @@ packages:
     resolution: {integrity: sha512-9anThAaj1dQr6IGmzBMcfzOQKTa5artjuPmw8NYK/fiGEMjADbSguBY2FMDykt+QhilR3wc9VA/3yVju7JHg7Q==}
     hasBin: true
     peerDependencies:
-      graphql: 16.8.0
+      graphql: '*'
     dependencies:
       '@babel/core': 7.26.7
       '@babel/generator': 7.26.5
@@ -2149,8 +2152,8 @@ packages:
     resolution: {integrity: sha512-Javneu5lsuhwNCryN+pXH93VPQ8g0dBX7wItHFgYiwQmzE1sVdg5tWHiOgHywzL2W21XQopa7IwIEnNbmeUJYA==}
     dev: true
 
-  /@saleor/app-sdk@0.0.0-pr-20250206135700(graphql@16.8.0)(next@15.1.6)(react-dom@19.0.0)(react@19.0.0):
-    resolution: {integrity: sha512-9M2jXfqo56SkgmVRUEzO3BOl/xXm328nqm+u33nX90nl4m/hK02MLthLiKbQEKelQK2FlfdgS8hl/R1lafD9tQ==}
+  /@saleor/app-sdk@0.0.0-pr-20250207113756(graphql@16.8.0)(next@15.1.6)(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-0EcrBNhxRxNYOwYylcWipRwmds42/YrOUWkL2ezzQPMTFSqRBlvueDPmsx53EU/JRHcH2zieZkq7G4SonclA/A==}
     peerDependencies:
       '@vercel/kv': ^1.0.0
       graphql: '>=16.6.0'

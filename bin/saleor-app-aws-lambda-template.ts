@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { SaleorAppAwsLambdaTemplateStack } from '../lib/saleor-app-aws-lambda-template-stack';
+import { SaleorAppApiGatewayStack } from '../lib/saleor-app-aws-lambda-template-stack';
 
 const app = new cdk.App();
-new SaleorAppAwsLambdaTemplateStack(app, 'SaleorAppAwsLambdaTemplateStack', {
+new SaleorAppApiGatewayStack(app, 'SaleorAppApiGatewayStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

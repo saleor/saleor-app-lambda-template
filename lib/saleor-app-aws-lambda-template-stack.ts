@@ -1,34 +1,44 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import * as apigw from "aws-cdk-lib/aws-apigateway";
-import * as lambda from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
+import { config } from 'dotenv';
+
+config();
 
 export class SaleorAppApiGatewayStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
 
-    const routerHandler = new lambda.Function(this, 'ApiRouterHandler', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      code: lambda.Code.fromAsset('lambda'),
-      handler: 'index.handler'
+    const routerHandler = new NodejsFunction(this, 'ApiRouteHandler', {
+      entry: "lambda/index.ts",
+      handler: "handler",
+      runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
+      environment: {
+        APL: process.env.APL!,
+        UPSTASH_URL: process.env.UPSTASH_URL!,
+        UPSTASH_TOKEN: process.env.UPSTASH_TOKEN!,
+      }
     });
 
-    const endpoint = new apigw.LambdaRestApi(this, `ApiGwEndpoint`, {
-      handler: routerHandler,
-    });
+    const api = new cdk.aws_apigatewayv2.HttpApi(this, "HttpApi");
+    const lambdaIntegration = new cdk.aws_apigatewayv2_integrations.HttpLambdaIntegration("LambdaIntegration", routerHandler);
 
-    // Add /api route
-    const apiResource = endpoint.root.addResource('api');
+    api.addRoutes({
+      path: "/api/manifest",
+      integration: lambdaIntegration,
+      methods: [cdk.aws_apigatewayv2.HttpMethod.GET]
+    })
 
-    apiResource.addResource('manifest').addMethod('GET', new apigw.LambdaIntegration(routerHandler));
+    api.addRoutes({
+      path: "/api/register",
+      integration: lambdaIntegration,
+      methods: [cdk.aws_apigatewayv2.HttpMethod.POST]
+    })
 
-    // Register endpoint
-    apiResource.addResource('register')
-      .addMethod('POST', new apigw.LambdaIntegration(routerHandler));
-
-    // Webhook endpoint
-    apiResource.addResource('webhook')
-      .addResource('order-created')
-      .addMethod('POST', new apigw.LambdaIntegration(routerHandler));
+    api.addRoutes({
+      path: "/api/webhook/order-created",
+      integration: lambdaIntegration,
+      methods: [cdk.aws_apigatewayv2.HttpMethod.POST]
+    })
   }
 }

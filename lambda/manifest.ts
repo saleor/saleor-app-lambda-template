@@ -2,7 +2,8 @@ import { createManifestHandler } from "@saleor/app-sdk/handlers/aws-lambda";
 import { orderCreatedWebhook } from "./webhook/order-created";
 
 export const handler = createManifestHandler({
-  manifestFactory({ appBaseUrl }) {
+  manifestFactory({ appBaseUrl, schemaVersion, request }) {
+    console.log("manifest", appBaseUrl, schemaVersion, request.requestContext.stage)
     return {
       name: "AWS Lambda Template",
       id: "saleor.app.aws-lambda-template",
