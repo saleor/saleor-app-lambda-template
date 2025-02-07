@@ -39,7 +39,7 @@ export const orderCreatedWebhook = new SaleorAsyncWebhook<
   OrderCreatedWebhookPayloadFragment
 >({
   name: "Order Created in Saleor",
-  webhookPath: "api/webhooks/order-created",
+  webhookPath: "api/webhook/order-created",
   event: "ORDER_CREATED",
   apl: saleorApp.apl,
   query: OrderCreatedGraphqlSubscription,
